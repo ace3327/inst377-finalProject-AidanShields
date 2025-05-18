@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search the Met Collection</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="search.html" class="active">Search</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="search-controls">
+      <h1>Search the Collection</h1>
+      <form id="search-form">
+        <input type="text" id="query" placeholder="Search term (e.g., Monet)" required />
+        <select id="department">
+          <option value="">All Departments</option>
+        </select>
+        <input type="number" id="date-start" placeholder="Start Year (e.g., 1800)" />
+        <input type="number" id="date-end" placeholder="End Year (e.g., 1900)" />
+        <input type="text" id="medium" placeholder="Medium (e.g., Oil on canvas)" />
+        <button type="submit">Search</button>
+      </form>
+    </section>
+
+    <section class="results-grid" id="results"></section>
+
+    <section class="chart-section">
+      <h2>Search Analytics</h2>
+      <canvas id="searchChart"></canvas>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Met Collection Explorer</p>
+  </footer>
+
+  <script src="search.js"></script>
+</body>
+</html>

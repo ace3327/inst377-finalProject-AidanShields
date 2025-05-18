@@ -1,0 +1,103 @@
+/* styles.css */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    line-height: 1.6;
+    background-color: #f9f9f9;
+    color: #333;
+  }
+  
+  header {
+    background-color: #222;
+    color: #fff;
+    padding: 1rem 0;
+  }
+  
+  nav {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+  }
+  
+  nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 0.5rem;
+  }
+  
+  nav a.active,
+  nav a:hover {
+    border-bottom: 2px solid #fff;
+  }
+  
+  main {
+    padding: 2rem;
+    max-width: 960px;
+    margin: auto;
+  }
+  
+  .intro,
+  .about-section,
+  .random-artwork {
+    margin-bottom: 2rem;
+  }
+  
+  .random-artwork #art-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .random-artwork img {
+    max-width: 300px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  }
+  
+  .art-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 1rem;
+  }
+  
+  .art-card img {
+    max-width: 100%;
+    border-radius: 4px;
+  }
+  
+  footer {
+    text-align: center;
+    padding: 1rem;
+    margin-top: 3rem;
+    background-color: #eee;
+  }
+  
+  form {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  #results {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  canvas {
+    max-width: 100%;
+    margin-top: 2rem;
+  }
+  

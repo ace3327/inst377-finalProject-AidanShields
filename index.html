@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Met Museum Explorer</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="index.html" class="active">Home</a>
+      <a href="about.html">About</a>
+      <a href="search.html">Search</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h1>Welcome to the Met Museum Explorer</h1>
+      <p>Explore thousands of pieces from the Metropolitan Museum of Art’s open access collection using our interactive search tools.</p>
+    </section>
+
+    <section class="random-artwork" id="random-artwork">
+      <h2>Featured Artwork</h2>
+      <div id="art-container"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Met Collection Explorer</p>
+  </footer>
+
+  <script>
+    async function loadRandomArtwork() {
+      const res = await fetch('https://collectionapi.metmuseum.org/public/collection/v1/objects');
+      const data = await res.json();
+  
+      let art = null;
+      let attempts = 0;
+  
+      while (!art?.primaryImageSmall && attempts < 10) {
+        const randomID = data.objectIDs[Math.floor(Math.random() * data.objectIDs.length)];
+        const artRes = await fetch(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${randomID}`);
+        art = await artRes.json();
+        attempts++;
+      }
+  
+      const container = document.getElementById('art-container');
+  
+      if (!art || !art.primaryImageSmall) {
+        container.innerHTML = `<p>Sorry, couldn't load a valid artwork with an image.</p>`;
+        return;
+      }
+  
+      container.innerHTML = `
+        <img src="${art.primaryImageSmall}" alt="${art.title}" />
+        <h3>${art.title}</h3>
+        <p><strong>Artist:</strong> ${art.artistDisplayName || 'Unknown'}</p>
+        <p><strong>Date:</strong> ${art.objectDate}</p>
+        <p><strong>Medium:</strong> ${art.medium}</p>
+      `;
+    }
+  
+    loadRandomArtwork();
+  </script>
+  
+  
+</body>
+</html>
