@@ -20,7 +20,7 @@
     <section class="search-controls">
       <h1>Search the Collection</h1>
       <form id="search-form">
-        <input type="text" id="query" placeholder="Search term (e.g., Monet)" />
+        <input type="text" id="query" placeholder="Search term (e.g., Rembrandt)" />
         <select id="department">
           <option value="">All Departments</option>
         </select>
@@ -35,7 +35,10 @@
 
     <section class="chart-section">
       <h2>Search Analytics</h2>
-      <canvas id="searchChart"></canvas>
+      <canvas id="searchChart" width="400" height="200"></canvas>
+
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script src="search.js"></script>
     </section>
   </main>
 
