@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   }
 
   const { data, error } = await supabase
-    .from('userSearches')
+    .from('usersearches')
     .select('query')
     .order('created_at', { ascending: false })
     .limit(100);

@@ -12,7 +12,7 @@ export default async function handler(req, res) {
 
   const { query, department, dateStart, dateEnd, medium } = req.body;
 
-  const { error } = await supabase.from('userSearches').insert([
+  const { error } = await supabase.from('usersearches').insert([
     {
       query,
       filters: { department, dateStart, dateEnd, medium }
