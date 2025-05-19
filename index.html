@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Met Museum Explorer</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
 <body>
   <header>
@@ -18,12 +19,19 @@
   <main>
     <section class="intro">
       <h1>Welcome to the Met Museum Explorer</h1>
-      <p>Explore thousands of pieces from the Metropolitan Museum of Art’s open access collection using our interactive search tools.</p>
+      <p>Explore thousands of pieces from the Metropolitan Museum of Art’s open access collection using interactive search and filtering tools.</p>
     </section>
 
     <section class="random-artwork" id="random-artwork">
-      <h2>Featured Artwork</h2>
-      <div id="art-container"></div>
+      <h2>Featured Random Artworks</h2>
+      <div class="swiper mySwiper">
+        <div class="swiper-wrapper" id="slider-wrapper">
+          <!-- Slides inserted by JS -->
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
+      </div>
     </section>
   </main>
 
@@ -31,40 +39,63 @@
     <p>&copy; 2025 Met Collection Explorer</p>
   </footer>
 
-  <script>
-    async function loadRandomArtwork() {
-      const res = await fetch('https://collectionapi.metmuseum.org/public/collection/v1/objects');
-      const data = await res.json();
-  
-      let art = null;
-      let attempts = 0;
-  
-      while (!art?.primaryImageSmall && attempts < 10) {
-        const randomID = data.objectIDs[Math.floor(Math.random() * data.objectIDs.length)];
-        const artRes = await fetch(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${randomID}`);
-        art = await artRes.json();
-        attempts++;
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+  async function loadSliderArtworks() {
+    const res = await fetch('https://collectionapi.metmuseum.org/public/collection/v1/objects');
+    const data = await res.json();
+
+    const sliderWrapper = document.getElementById('slider-wrapper');
+    sliderWrapper.innerHTML = '';
+
+    const randomIDs = Array.from({ length: 10 }, () =>
+      data.objectIDs[Math.floor(Math.random() * data.objectIDs.length)]
+    );
+
+    const promises = randomIDs.map(id =>
+      fetch(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${id}`)
+        .then(res => res.json())
+    );
+
+    const artworks = await Promise.all(promises);
+
+    artworks.forEach(art => {
+      if (art.primaryImageSmall) {
+        const slide = document.createElement('div');
+        slide.className = 'swiper-slide fade-animate';
+        slide.innerHTML = `
+          <img src="${art.primaryImageSmall}" alt="${art.title}" class="zoom-animate" />
+          <h3>${art.title}</h3>
+          <p><strong>Artist:</strong> ${art.artistDisplayName || 'Unknown'}</p>
+          <p><strong>Date:</strong> ${art.objectDate}</p>
+        `;
+        sliderWrapper.appendChild(slide);
       }
-  
-      const container = document.getElementById('art-container');
-  
-      if (!art || !art.primaryImageSmall) {
-        container.innerHTML = `<p>Sorry, couldn't load a valid artwork with an image.</p>`;
-        return;
-      }
-  
-      container.innerHTML = `
-        <img src="${art.primaryImageSmall}" alt="${art.title}" />
-        <h3>${art.title}</h3>
-        <p><strong>Artist:</strong> ${art.artistDisplayName || 'Unknown'}</p>
-        <p><strong>Date:</strong> ${art.objectDate}</p>
-        <p><strong>Medium:</strong> ${art.medium}</p>
-      `;
-    }
-  
-    loadRandomArtwork();
-  </script>
-  
-  
+    });
+
+    new Swiper('.mySwiper', {
+      loop: true,
+      effect: 'fade',
+      fadeEffect: { crossFade: true },
+      autoplay: {
+        delay: 4000,
+        disableOnInteraction: false,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      slidesPerView: 1,
+    });
+  }
+
+  loadSliderArtworks();
+</script>
 </body>
 </html>
